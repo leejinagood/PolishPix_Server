@@ -31,8 +31,9 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	
-	implementation 'org.springframework.data:spring-data-mongodb:1.7.2.RELEASE'
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 }
+
 
 tasks.named('test') {
 	useJUnitPlatform()
