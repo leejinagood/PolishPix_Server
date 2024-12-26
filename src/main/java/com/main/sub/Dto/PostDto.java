@@ -11,7 +11,9 @@ public class PostDto {
 	private String post_content;
 	private String insert_date;
 	private String user_id;
-    private List<ImageDto> images;
+    private String user_name;
+    private String user_profile;
+	private List<ImageDto> images;
 	
     @Data
     public static class ImageDto {
@@ -28,6 +30,8 @@ public class PostDto {
 		//user 설정 
 		Post.User user = new Post.User();
         user.setUser_id(user_id);
+        user.setUser_name(user_name);
+        user.setUser_profile(user_profile);
         post.setUser(user);
 
         // Images 설정

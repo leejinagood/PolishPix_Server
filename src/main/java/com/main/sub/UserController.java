@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.*;
 
+import com.main.sub.Entity.Post;
 import com.main.sub.Entity.User;
 import com.main.sub.Repository.UserRepository;
 import com.main.sub.Dto.UserDto;
@@ -12,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor // DI
 @RestController // 데이터 리턴 서버
-@RequestMapping("/user")
+@RequestMapping("/User")
 public class UserController {
 	
 	// DI
@@ -24,5 +25,9 @@ public class UserController {
 		return userRepository.findAll();
 	}
 	
+	@GetMapping("/{id}")
+	public User findById(@PathVariable("id") String id) { //아이디별로 사용 조회하기
+	    return userRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found"));
+	}
 		
 }
