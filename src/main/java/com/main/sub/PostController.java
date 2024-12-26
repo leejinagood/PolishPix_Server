@@ -28,6 +28,11 @@ public class PostController {
 	public Post findById(@PathVariable("id") String id) { //아이디별로 게시글 조회하기
 	    return postRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found"));
 	}
+	
+	@GetMapping("/posts/{user_id}")
+    public List<Post> findByUserId(@PathVariable("user_id") String user_id) {
+        return postRepository.findByUseruser_id(user_id); // user_id를 기준으로 게시글 조회
+    }
 
 	
 }
