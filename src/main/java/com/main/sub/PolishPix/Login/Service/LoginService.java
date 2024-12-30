@@ -6,13 +6,14 @@ import org.springframework.stereotype.Service;
 import com.main.sub.PolishPix.Login.Entity.Login;
 import com.main.sub.PolishPix.Login.Repository.LoginRepository;
 import com.main.sub.PolishPix.Login.Dto.LoginDto;
-
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @RequiredArgsConstructor
 @Service
 public class LoginService {
     private final LoginRepository loginRepository;
-
+    private final BCryptPasswordEncoder passwordEncoder;
+    
     // 회원가입 로직
     public Login signup(LoginDto dto) {
         // DTO를 엔티티로 변환
@@ -30,6 +31,11 @@ public class LoginService {
             throw new IllegalArgumentException("비밀번호는 최소 8자 이상, 숫자와 특수 문자를 포함해야 합니다.");
         }
 
+        // 비밀번호 암호화
+        String encryptedPassword = passwordEncoder.encode(loginEntity.getPassword());
+        loginEntity.setPassword(encryptedPassword);  // 암호화된 비밀번호를 엔티티에 설정
+
+        
         // 이메일 중복 체크
         if (loginRepository.findByEmail(loginEntity.getEmail()).isPresent()) {
             throw new IllegalArgumentException("이미 존재하는 이메일입니다.");

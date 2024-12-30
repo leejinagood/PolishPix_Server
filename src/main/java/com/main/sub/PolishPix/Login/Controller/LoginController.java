@@ -20,7 +20,7 @@ public class LoginController {
 	// DB
 	private final LoginRepository loginRepository;
 	
-	//서비스 로
+	//서비스 로직 
 	private final LoginService loginService;
 
 	@PostMapping("/Signup")
