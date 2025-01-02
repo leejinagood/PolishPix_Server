@@ -1,10 +1,10 @@
-package com.main.sub.Dto;
+package com.main.sub.PolishPix.Post.Dto;
 
 import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import com.main.sub.Entity.Post;
+import com.main.sub.PolishPix.Post.Entity.Post;
 
 import lombok.Data;
 

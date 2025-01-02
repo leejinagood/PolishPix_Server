@@ -1,4 +1,4 @@
-package com.main.sub.Config;
+package com.main.sub.PolishPix.Config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

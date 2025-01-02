@@ -1,4 +1,4 @@
-package com.main.sub.Entity;
+package com.main.sub.PolishPix.Post.Entity;
 
 import java.util.List;
 

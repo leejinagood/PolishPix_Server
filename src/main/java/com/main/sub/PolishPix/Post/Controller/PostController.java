@@ -1,12 +1,12 @@
-package com.main.sub;
+package com.main.sub.PolishPix.Post.Controller;
 
 import java.util.List;
 
 import org.springframework.web.bind.annotation.*;
 
-import com.main.sub.Entity.Post;
-import com.main.sub.Repository.PostRepository;
-import com.main.sub.Dto.PostDto;
+import com.main.sub.PolishPix.Post.Dto.PostDto;
+import com.main.sub.PolishPix.Post.Entity.Post;
+import com.main.sub.PolishPix.Post.Repository.PostRepository;
 
 import lombok.RequiredArgsConstructor;
 

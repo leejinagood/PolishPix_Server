@@ -1,4 +1,4 @@
-package com.main.sub.Config;
+package com.main.sub.PolishPix.Config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

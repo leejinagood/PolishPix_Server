@@ -1,4 +1,4 @@
-package com.main.sub.Entity;
+package com.main.sub.PolishPix.User.Entity;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

@@ -1,13 +1,13 @@
-package com.main.sub;
+package com.main.sub.PolishPix.User.Controller;
 
 import java.util.List;
 
 import org.springframework.web.bind.annotation.*;
 
-import com.main.sub.Entity.Post;
-import com.main.sub.Entity.User;
-import com.main.sub.Repository.UserRepository;
-import com.main.sub.Dto.UserDto;
+import com.main.sub.PolishPix.Post.Entity.Post;
+import com.main.sub.PolishPix.User.Dto.UserDto;
+import com.main.sub.PolishPix.User.Entity.User;
+import com.main.sub.PolishPix.User.Repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 

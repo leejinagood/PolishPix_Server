@@ -1,6 +1,6 @@
-package com.main.sub.Dto;
+package com.main.sub.PolishPix.User.Dto;
 
-import com.main.sub.Entity.User;
+import com.main.sub.PolishPix.User.Entity.User;
 
 import lombok.Data;
 
