@@ -10,6 +10,7 @@ import com.main.sub.PolishPix.Login.Entity.Login;
 import com.main.sub.PolishPix.Login.Repository.LoginRepository;
 import com.main.sub.PolishPix.Login.Dto.LoginDto;
 import com.main.sub.PolishPix.Login.Service.LoginService;
+import com.main.sub.PolishPix.User.Entity.User;
 
 import lombok.RequiredArgsConstructor;
 
@@ -36,6 +37,19 @@ public class LoginController {
             return ResponseEntity.status(500).body("Error: " + e.getMessage());
         }
     }
-
 	
+	
+	@GetMapping("/login/{email}&{password}")
+    public ResponseEntity<?> login(@PathVariable("email") String email, @PathVariable("password") String password) {
+        try {
+        	String loginMessage = loginService.login(email, password);
+            return ResponseEntity.ok(loginMessage);
+        }catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
+            return ResponseEntity.status(500).body("Error: " + e.getMessage());
+        }
+    }
+	
+
+
 }

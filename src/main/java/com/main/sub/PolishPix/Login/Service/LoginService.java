@@ -6,6 +6,10 @@ import org.springframework.stereotype.Service;
 import com.main.sub.PolishPix.Login.Entity.Login;
 import com.main.sub.PolishPix.Login.Repository.LoginRepository;
 import com.main.sub.PolishPix.Login.Dto.LoginDto;
+
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @RequiredArgsConstructor
@@ -43,6 +47,30 @@ public class LoginService {
 
         // DB에 저장
         return loginRepository.insert(loginEntity);
+    }
+    
+    
+    // 로그인 로직
+    public String login(String email, String password) {
+    	String message ="";
+    	
+    	Optional<Login> findUser = loginRepository.findByEmail(email); //이메일 존재 여부 확인 
+    	
+    	//Optional[Login(_id=6775f6c244ccfc44be73d158, email=testtest@naver.com, password=$2a$10$U6SChrmeYUuL8coqJtSWu.9Jy5SRk2d659VOxVfQ5fc0UWlGQXC4q, phone=010-1111-2222, name=테스트, profile=null)]
+    	
+    	if(findUser.isPresent() == false){ //isPresent함수는 존재여부에 대해.. 
+    		message = "이메일이 존재하지 않습니다.";
+    	}else {
+    		String DBpassword = findUser.get().getPassword(); //DB에 저장되어 있는 password 값 가져오기 
+    		boolean isMatch = passwordEncoder.matches(password, DBpassword); //입력한 비밀번호와 매치하는지 
+    		
+    		if(isMatch == true) { //비밀번호 일치 시 jwt 토큰 생성 후 리턴 
+    			String token="";
+    		}else if(isMatch == false) {
+    			message = "비밀번호가 다릅니다.";
+    		}
+    	}
+    	return message;
     }
 
     
