@@ -2,15 +2,22 @@ package com.main.sub.PolishPix.Login.Service;
 
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.stereotype.Service;
-import com.main.sub.PolishPix.Login.Entity.Login;
-import com.main.sub.PolishPix.Login.Repository.LoginRepository;
-import com.main.sub.PolishPix.Login.Dto.LoginDto;
-
-import java.util.List;
+import java.util.Date;
 import java.util.Optional;
 
+import javax.crypto.SecretKey;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.main.sub.PolishPix.Login.Entity.Login;
+import com.main.sub.PolishPix.Login.Repository.LoginRepository;
+
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
+
+import com.main.sub.PolishPix.Login.Dto.LoginDto;
 
 @RequiredArgsConstructor
 @Service
@@ -50,28 +57,44 @@ public class LoginService {
     }
     
     
+    //application.propertise에서 관리하는 인증키 
+    @Value("${jwt.secretKey}")
+    private String secretKeyString;
+    
+    
     // 로그인 로직
     public String login(String email, String password) {
-    	String message ="";
-    	
-    	Optional<Login> findUser = loginRepository.findByEmail(email); //이메일 존재 여부 확인 
-    	
-    	//Optional[Login(_id=6775f6c244ccfc44be73d158, email=testtest@naver.com, password=$2a$10$U6SChrmeYUuL8coqJtSWu.9Jy5SRk2d659VOxVfQ5fc0UWlGQXC4q, phone=010-1111-2222, name=테스트, profile=null)]
-    	
-    	if(findUser.isPresent() == false){ //isPresent함수는 존재여부에 대해.. 
-    		message = "이메일이 존재하지 않습니다.";
-    	}else {
-    		String DBpassword = findUser.get().getPassword(); //DB에 저장되어 있는 password 값 가져오기 
-    		boolean isMatch = passwordEncoder.matches(password, DBpassword); //입력한 비밀번호와 매치하는지 
-    		
-    		if(isMatch == true) { //비밀번호 일치 시 jwt 토큰 생성 후 리턴 
-    			String token="";
-    		}else if(isMatch == false) {
-    			message = "비밀번호가 다릅니다.";
-    		}
-    	}
-    	return message;
+
+        Optional<Login> findUser = loginRepository.findByEmail(email); //받은 이메일을 가지고 db에서 일치하는 데이터 가져오기 
+
+        if (!findUser.isPresent()) {
+            return "이메일이 존재하지 않습니다.";
+        }
+
+        String DBpassword = findUser.get().getPassword(); //입력한 비번이랑 db에 저장 되어있는 비번이랑 맞는지 확인 
+        boolean isMatch = passwordEncoder.matches(password, DBpassword);
+
+        
+        if (isMatch) { // 비밀번호까지 다 맞았을 경우 Jwt 토큰 생성
+        	
+        	byte[] secretKeyBytes = java.util.Base64.getDecoder().decode(secretKeyString);
+            SecretKey secretKey = Keys.hmacShaKeyFor(secretKeyBytes);  // HMAC-SHA256을 위한 SecretKey
+
+            String token = Jwts.builder()
+                    .claim("email", findUser.get().getEmail()) // 이메일 claim에 저장
+                    .claim("name", findUser.get().getName())  // 이름 claim에 저장
+                    .claim("role", "USER")  // 사용자 권한 설정
+                    .setIssuedAt(new Date())  // 발행 시간 설정
+                    .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))  // 30분 유효 기간
+                    .signWith(secretKey)  // 서명 설정
+                    .compact();
+
+            return token; // 생성된 JWT 토큰 반환
+        } else {
+            return "비밀번호가 다릅니다.";  // 비밀번호 불일치 처리
+        }
     }
 
+    
     
 }
