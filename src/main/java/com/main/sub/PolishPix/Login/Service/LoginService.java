@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.main.sub.PolishPix.Login.Entity.Login;
 import com.main.sub.PolishPix.Login.Repository.LoginRepository;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
@@ -83,7 +84,8 @@ public class LoginService {
             String token = Jwts.builder()
                     .claim("email", findUser.get().getEmail()) // 이메일 claim에 저장
                     .claim("name", findUser.get().getName())  // 이름 claim에 저장
-                    .claim("role", "USER")  // 사용자 권한 설정
+                    .claim("profile", findUser.get().getProfile())  // 프로필사진 claim에 저장
+//                    .claim("role", "USER")  // 사용자 권한 설정
                     .setIssuedAt(new Date())  // 발행 시간 설정
                     .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))  // 30분 유효 기간
                     .signWith(secretKey)  // 서명 설정
@@ -95,6 +97,48 @@ public class LoginService {
         }
     }
 
+    //토큰을 디코드하고 Claims 반환
+    public Claims parseToken(String token) {
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(secretKeyString)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (Exception e) {
+            throw new RuntimeException("잘못된 토큰");
+        }
+    }
+
+    public boolean validateToken(String token) {
+        try {
+            parseToken(token);  // 유효한 토큰인지 검증
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    //claims에서 유저 정보 추출 
+    public Login getInfoFromToken(String token) {
+        Claims claims = parseToken(token);
+        String email = claims.get("email", String.class);
+        String name = claims.get("name", String.class);
+        String profile = claims.get("profile", String.class);
+
+        // Login 객체를 생성하여 반환
+        return new Login(email, name, profile);
+    }
+    
     
     
 }
+    
+    
+    
+    
+    
+    
+    
+    
+    

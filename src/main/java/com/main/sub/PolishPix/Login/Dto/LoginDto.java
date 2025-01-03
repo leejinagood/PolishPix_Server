@@ -12,6 +12,7 @@ public class LoginDto {
 	private String phone;
     private String name;
     private String profile;
+    private String token;
 	
 	public Login toEntity() {
 		//user 설정 

@@ -24,6 +24,7 @@ public class LoginController {
 	//서비스 로직 
 	private final LoginService loginService;
 
+	//회원가입 컨트롤러 
 	@PostMapping("/Signup")
     public ResponseEntity<?> signup(@RequestBody LoginDto dto) {
         try {
@@ -38,7 +39,7 @@ public class LoginController {
         }
     }
 	
-	
+	//로그인 컨트롤러 
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody LoginDto dto) {
 	    try {
@@ -49,6 +50,24 @@ public class LoginController {
 	        return ResponseEntity.status(500).body("Error: " + e.getMessage());
 	    }
 	}
+	
+	//토큰 인증 및 인가 컨트롤러 
+	@PostMapping("/token")
+    public ResponseEntity<?> token(@RequestBody LoginDto dto) { //login Dto에 token 객체가 있음.  
+        try {
+            String token = dto.getToken();
+            
+            if (loginService.validateToken(token)) { //유효성 검사 
+                Login userInfo = loginService.getInfoFromToken(token);//토큰에서 추출한 user 정보  
+                return ResponseEntity.ok(userInfo);
+            } else {
+                return ResponseEntity.status(401).body("Invalid token");
+            }
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
+            return ResponseEntity.status(500).body("Error: " + e.getMessage());
+        }
+    }
 	
 
 
