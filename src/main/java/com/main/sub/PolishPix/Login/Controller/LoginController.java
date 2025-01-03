@@ -39,16 +39,16 @@ public class LoginController {
     }
 	
 	
-	@GetMapping("/login/{email}&{password}")
-    public ResponseEntity<?> login(@PathVariable("email") String email, @PathVariable("password") String password) {
-        try {
-        	String loginMessage = loginService.login(email, password);
-            return ResponseEntity.ok(loginMessage);
-        }catch (Exception e) {
-            System.err.println("Error: " + e.getMessage());
-            return ResponseEntity.status(500).body("Error: " + e.getMessage());
-        }
-    }
+	@PostMapping("/login")
+	public ResponseEntity<?> login(@RequestBody LoginDto dto) {
+	    try {
+	        String loginMessage = loginService.login(dto.getEmail(), dto.getPassword());
+	        return ResponseEntity.ok(loginMessage);
+	    } catch (Exception e) {
+	        System.err.println("Error: " + e.getMessage());
+	        return ResponseEntity.status(500).body("Error: " + e.getMessage());
+	    }
+	}
 	
 
 
