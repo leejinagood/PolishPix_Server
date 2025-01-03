@@ -82,6 +82,7 @@ public class LoginService {
             SecretKey secretKey = Keys.hmacShaKeyFor(secretKeyBytes);  // HMAC-SHA256을 위한 SecretKey
 
             String token = Jwts.builder()
+            		.claim("id", findUser.get().get_id()) // user_id claim에 저장
                     .claim("email", findUser.get().getEmail()) // 이메일 claim에 저장
                     .claim("name", findUser.get().getName())  // 이름 claim에 저장
                     .claim("profile", findUser.get().getProfile())  // 프로필사진 claim에 저장
@@ -122,12 +123,13 @@ public class LoginService {
     //claims에서 유저 정보 추출 
     public Login getInfoFromToken(String token) {
         Claims claims = parseToken(token);
+        String id = claims.get("id", String.class);
         String email = claims.get("email", String.class);
         String name = claims.get("name", String.class);
         String profile = claims.get("profile", String.class);
 
         // Login 객체를 생성하여 반환
-        return new Login(email, name, profile);
+        return new Login(id, email, name, profile);
     }
     
     

@@ -25,7 +25,8 @@ public class Login {
     public Login() {}
 
     // 토큰 인증 후 claims에서 추출한 회원 정보를 위한 최소 생성자 생성 
-    public Login(String email, String name, String profile) {
+    public Login(String id, String email, String name, String profile) {
+    	this._id = id;
         this.email = email;
         this.name = name;
         this.profile = profile;
