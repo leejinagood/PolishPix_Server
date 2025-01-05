@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor // DI 생성자를 생성해주는..
 @RestController // 데이터 리턴 서버
-@RequestMapping("/Contetnt")
+@RequestMapping("/Content")
 public class PostController {
 	
 	// DB
